@@ -262,12 +262,18 @@ sub ical_for_dom {
             }
 
             # add an event hash
+            my $location_url = $room;
+            for($location_url) {
+                s/\s//g;
+                s/[^\w\d]/-/g;
+            }
+
             my %icalevent = (
                     DTSTART => $startdate,
                     DURATION => "PT" . ($duration * 60 - 10) . "M",
                     RRULE => "FREQ=WEEKLY;COUNT=" . ($maxweek - $minweek + 1),
                     SUMMARY => "$subject $room",
-                    LOCATION => $room,
+                    LOCATION => "$room http://bath.ac.uk/timetable/roominfo/$location_url.htm",
             );
             $icalevent{EXDATE} = join( ',', @exdates) if @exdates;
 
